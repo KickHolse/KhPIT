@@ -1,0 +1,94 @@
+# Skript feito por Kiberzn
+# Discord: a-zn#4375
+
+options:
+  bungeecord: true
+game:
+  selected-kits:
+    none: 'Nenhum'
+  rewards:
+    coins-per-day: 1000
+    coins-per-kill: 50
+    coins-per-death: 25
+    exp-per-kill: 10
+  messages:
+    delay: '&cVocê deve aguardar &e{time}&c para usar isto novamente!'
+    bow-hit: '{victim}&e está com &c{life} ❤&e de HP!'
+    suicide: '{victim}&7 morreu sozinho.'
+    death: '{victim}&7 foi morto por {attacker}&7.'
+    build:
+      enabled: '&aModo construtor ativado!'
+      disabled: '&cModo construtor desativado!'
+scoreboard:
+  update-time: 1
+  titles:
+  - '&a&lTHE PIT'
+  - '&6&lT&a&lHE PIT'
+  - '&f&lT&6&lH&a&lE PIT'
+  - '&f&lTH&6&lE &a&lPIT'
+  - '&f&lTHE &6&lP&a&lIT'
+  - '&f&lTHE P&6&lI&a&lT'
+  - '&f&lTHE PI&6&lT'
+  - '&f&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&f&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  - '&a&lTHE PIT'
+  lines:
+  - ''
+  - ' Kills: &a{kills}'
+  - ' Deaths: &a{deaths}'
+  - ' Kill Streak: &a{killstreak}'
+  - ''
+  - ' Nível: &a{level}'
+  - ' Moedas: &6{coins}'
+  - ''
+  - ' &ewww.redezn.com'
