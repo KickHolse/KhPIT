@@ -1,13 +1,10 @@
 # Skript feito por Kiberzn
 # Discord: a-zn#4375
 
-options:
-  bungeecord: true
 game:
   selected-kits:
     none: 'Nenhum'
   rewards:
-    coins-per-day: 1000
     coins-per-kill: 50
     coins-per-death: 25
     exp-per-kill: 10
@@ -19,6 +16,15 @@ game:
     build:
       enabled: '&aModo construtor ativado!'
       disabled: '&cModo construtor desativado!'
+  hotbar:
+    armor:
+      chestplate: 'item>UNBREAKABLE CHAINMAIL_CHESTPLATE : named>&aPeitoral'
+      leggings: 'item>UNBREAKABLE CHAINMAIL_LEGGINGS : named>&aCalças'
+      boots: 'item>UNBREAKABLE CHAINMAIL_BOOTS : named>&aBotas'
+    items:
+      sword: 'slot>0 : item>UNBREAKABLE STONE_SWORD : named>&aEspada'
+      bow: 'slot>1 : item>UNBREAKABLE BOW : named>&aArco'
+      ammunition: 'slot>1 : item>30 ARROWS : named>&aMunição'
 scoreboard:
   update-time: 1
   titles:
