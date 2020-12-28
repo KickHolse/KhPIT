@@ -24,7 +24,7 @@ game:
     items:
       sword: 'slot>0 : item>UNBREAKABLE STONE_SWORD : named>&aEspada'
       bow: 'slot>1 : item>UNBREAKABLE BOW : named>&aArco'
-      ammunition: 'slot>1 : item>30 ARROWS : named>&aMunição'
+      ammunition: 'slot>8 : item>30 ARROWS : named>&aMunição'
 scoreboard:
   update-time: 1
   titles:
