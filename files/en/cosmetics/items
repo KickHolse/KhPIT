@@ -2,9 +2,6 @@ menu:
   title: 'Shop - Items'
   bought: '&cYou have already purchased this equipment.'
   purchase: '&aYou purchased the &f''{item}''&aequipment.'
-  replaces:
-    select: '&eClick to buy or select.'
-    locked: '&cYou don''t have enough level.'
 
 items:
   replaces:
