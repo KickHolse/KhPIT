@@ -1,0 +1,49 @@
+# KhKits - Criado por Kiber7
+# Discord - https://kskripts.tk/discord
+
+options:
+ bungeecord: true
+ coins:
+  kills: 50
+  death: 25
+ xp:
+  kills: 10
+
+chat:
+ delay: '&cAguarde mais {time} para falar novamente.'
+ color:
+  default: '&7'
+  custom: '&f'
+ format: '&7[&a{khpit_level}&7] &8❙ {khcore_prefixed}{color}: {message}'
+
+lobby:
+ broadcast: '{khcore_prefixed} &6entrou no lobby!'
+ tab:
+  enabled: true
+  header: '\n&a&lREDE KS\n    &fjogar.kskripts.tk\n '
+  footer: ' \n&bForúm: &fkskripts.tk/forum\n&b               Discord: &fkskripts.tk/discord               \n'
+
+ingame:
+ broadcast:
+  suicide: '{name} &emorreu sozinho.'
+  killed: '{name} &efoi abatido(a) por {killer}&e.'
+ messages:
+  level_up: '&aSeu nível foi upado para o &2{level}'
+  delay: '&cAguarde mais {time} para usar isto novamente.'
+  bow:
+   hit: '{name} &aestá com &c{hp}❤ &ade HP'
+
+scoreboard:
+  title: '&6&lTHE PIT'
+  lines:
+  - ''
+  - ' Nível: &a{level}'
+  - ' Estado: &7{state}'
+  - ''
+  - ' Abates: &a{kills}'
+  - ' Mortes: &a{deaths}'
+  - ''
+  - ' Coins: &6{coins}'
+  - ' Online: &a{online}'
+  - ''
+  - '&7www.kskripts.tk'
