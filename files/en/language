@@ -1,5 +1,5 @@
-# KhKits - Criado por Kiber7
-# Discord - https://kskripts.tk/discord
+# crafted by kick#0808
+# www.kskripts.tk
 
 options:
  bungeecord: true
@@ -34,16 +34,16 @@ ingame:
    hit: '{name} &aestá com &c{hp}❤ &ade HP'
 
 scoreboard:
+  status:
+    idling: '&7Idling'
+    fighting: '&cFighting'
   title: '&6&lTHE PIT'
   lines:
   - ''
-  - ' Nível: &a{level}'
-  - ' Estado: &7{state}'
+  - ' Level: &a{level}'
+  - ' Needed XP: &b{need_level}'
   - ''
-  - ' Abates: &a{kills}'
-  - ' Mortes: &a{deaths}'
-  - ''
+  - ' Status: &7{state}'
   - ' Coins: &6{coins}'
-  - ' Online: &a{online}'
   - ''
   - '&7www.kskripts.tk'
