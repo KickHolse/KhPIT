@@ -1,43 +1,37 @@
 menu:
- locked_slot: '351:8 : 1 : nome>&cSlot #{slot} : desc>&7Utilize habilidades para lhe ajudar\n&7em combate.\n\n&fNível necessário: &6{level}\n\n{state}'
- unlocked_slot: '351:10 : 1 : nome>&aSlot #{slot} : desc>&7Selecione uma habilidade para\n&7preencher este slot.\n\n{state}'
-
- replaces:
-  select: '&eClique para comprar ou selecionar.'
-  locked: '&cVocê não tem nível o suficiente.'
-
- slot_1:
-  required_level: 1
- slot_2:
-  required_level: 5
- slot_3:
-  required_level: 10
- slot_4:
-  required_level: 20
- slot_5:
-  required_level: 50
+  locked_slot: '351:8 : 1 : nome>&cSlot #{slot} : desc>&7Use skills to help you in combat.\n\n&fRequired level: &6{level}\n\n{state}'
+  unlocked_slot: '351:10 : 1 : nome>&aSlot #{slot} : desc>&7Select a skill to fill this slot.\n\n{state}'
+  replaces:
+    select: '&eClick to buy or select.'
+    locked: '&cYou don''t have enough level.'
+  required_level:
+    slot_1: 1
+    slot_2: 5
+    slot_3: 10
+    slot_4: 20
+    slot_5: 50
 
 skills:
- replaces:
-  select: '&e➜ Clique para selecionar.'
-  unselect: '&e➜ Clique para deselecionar.'
-  buy: '&e➜ Clique para comprar.'
-  insufficient-coins: '&c➜ Você não tem moedas o suficiente.'
-  cost: '&fPreço: &6{price} coins.\n'
+  replaces:
+    select: '&e➜ Click to select..'
+    unselect: '&e➜ Click to deselect.'
+    buy: '&e➜ Click to buy.'
+    insufficient-coins: '&c➜ You don''t have enough coins.'
+    cost: '&fCost: &6{price} coins.\n'
 
- golden_head:
-  name: 'Golden Head'
-  price: 5000
-  icon: 'HEAD:3 : 1 : dono>StackedGold : nome>&6Golden Head : desc>&7Ao abater um jogador você\n&7receberá uma cabeça dourada\n&7que lhe dará efeitos ao come-la.\n\n&8 ❙ Você receberá efeitos de uma\n&8 ❙ maçã dourada e velocidade I por\n&8 ❙ 10 segundos.\n\n{state}'
- fishing_rod:
-  name: 'Fishing Rod'
-  price: 7000
-  icon: 'FISHING_ROD : 1 : nome>&6Fishing Rod : desc>&7Nasça com uma vara de pesca\n&7que lhe ajudará a combar seus\n&7inimigos mais fácil.\n\n{state}'
- lava_bucket:
-  name: 'Lava Bucket'
-  price: 10000
-  icon: 'LAVA_BUCKET : 1 : nome>&6Lava Bucket : desc>&7Nasça com um balde de lava\n&7e ateie fogo em seus inimigos.\n\n{state}'
- endless_quiver:
-  name: 'Endless Quiver'
-  price: 13000
-  icon: 'BOW : 1 : nome>&6Endless Quiver : desc>&7Pensarei em uma desc.\n\n{state}'
+  golden_head:
+    name: 'Golden Head'
+    price: 5000
+    icon: 'HEAD:3 : 1 : dono>StackedGold : nome>&6Golden Head : desc>&7When you kill a player you will\n&7receive a golden head that will\n&7give you effects when you eat it.\n\n&8 ❙ You will receive effects of a\n&8 ❙ golden apple and speed I for\n&8 ❙ 10 seconds.\n\n{state}'
+  fishing_rod:
+    name: 'Fishing Rod'
+    price: 7000
+    icon: 'FISHING_ROD : 1 : nome>&6Fishing Rod : desc>&7Born with a fishing rod that will\n&7help you combo your enemies\n&7easier.\n\n{state}'
+  lava_bucket:
+    name: 'Lava Bucket'
+    price: 10000
+    icon: 'LAVA_BUCKET : 1 : nome>&6Lava Bucket : desc>&7Born with a bucket of lava\n&7and set your enemies on fire.\n\n{state}'
+  endless_quiver:
+    name: 'Endless Quiver'
+    price: 13000
+    icon: 'BOW : 1 : nome>&6Endless Quiver : desc>&7When hitting an enemy with a\n&7bow, you will receive two extra\n&7arrows.\n\n{state}'
