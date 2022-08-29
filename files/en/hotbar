@@ -1,0 +1,13 @@
+spawn:
+ profile:
+  slot: 3
+  execute: ''
+  icon: 'HEAD:3 : dono>{player} : nome>&eProfile'
+ shop:
+  slot: 5
+  execute: 'shop'
+  icon: 'EMERALD : nome>&eShop'
+ingame:
+ sword:
+  slot: 0
+  icon: 'FISHING_ROD : 1 : nome>&6Fishing Rod'
