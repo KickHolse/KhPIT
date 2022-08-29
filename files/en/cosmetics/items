@@ -1,0 +1,32 @@
+items:
+ replaces:
+  selected: '&6Já está equipado.'
+  buy: '&e➜ Clique para comprar.'
+  insufficient-coins: '&c➜ Você não tem moedas o suficiente.'
+  cost: '&fPreço: &6{price} coins.\n'
+
+ diamond_sword:
+  name: 'Espada de Diamante'
+  price: 500
+  slot: 0
+  icon: 'DIAMOND_SWORD : 1 : nome>&aEspada de Diamante : desc>&7Ao comprar este item, você receberá\n&7uma espada de diamante quando entrar\n&7em combate.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
+ obsidian:
+  name: 'Obsidiana'
+  price: 350
+  icon: 'OBSIDIAN : 8 : nome>&aObsidiana : desc>&7Com este kit você receberá 8\n&7obsidians que somem após 1 minuto\n&7depois de serem colocadas.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
+ arrow:
+  name: 'Flechas'
+  price: 200
+  icon: 'ARROW : 18 : nome>&aFlechas : desc>&7Se você for um bom arqueiro este item\n&7será perfeito para você. Ele lhe dará\n&7mais flechas para você atirar em seus\n&7inimigos.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
+ diamond_chestplate:
+  name: 'Peitoral de Diamante'
+  price: 800
+  icon: 'DIAMOND_CHESTPLATE : 1 : nome>&aPeitoral de Diamante : desc>&7A.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
+ iron_leggings:
+  name: 'Calças de Ferro'
+  price: 400
+  icon: 'IRON_LEGGINGS : 1 : nome>&aCalças de Ferro : desc>&7A.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
+ diamond_boots:
+  name: 'Botas de Diamante'
+  price: 625
+  icon: 'DIAMOND_BOOTS : 1 : nome>&aBotas de Diamante : desc>&7A.\n\n&8 ❙ Este item desaparecerá quando\n&8 ❙ você morrer.\n\n{state}'
