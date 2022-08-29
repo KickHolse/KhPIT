@@ -2,12 +2,14 @@
 # www.kskripts.tk
 
 options:
- bungeecord: true
- coins:
-  kills: 50
-  death: 25
- xp:
-  kills: 10
+  bungeecord: true
+  items:
+    come_back: 'ROSE_RED : nome>&cCome back'
+  coins:
+    kills: 50
+    death: 25
+  xp:
+    kills: 10
 
 chat:
  delay: '&cAguarde mais {time} para falar novamente.'
