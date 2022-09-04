@@ -10,4 +10,14 @@ spawn:
 ingame:
  sword:
   slot: 0
-  icon: 'FISHING_ROD : 1 : nome>&6Fishing Rod'
+  icon: 'STONE_SWORD'
+ bow:
+  slot: 1
+  icon: 'BOW'
+ arrow:
+  slot: 8
+  icon: 'ARROW : 32 : nome>&aArrows'
+ armor:
+  boots: 'IRON_BOOTS'
+  leggings: 'CHAINMAIL_LEGGINGS'
+  chestplate: 'CHAINMAIL_CHESTPLATE'
