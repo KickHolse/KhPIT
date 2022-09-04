@@ -1,12 +1,10 @@
 menu:
   title: 'Shop'
-  messages:
-    bought: '&cYou already have this skill equipped in a slot.'
-    select: '&aYou equipped the &f''{skill}''&a skill in &fSlot #{slot}&a.'
-    purchase: '&aYou purchased the &f''{skill}''&a skill.'
-  replaces:
-    select: '&eClick to buy or select.'
-    locked: '&cYou don''t have enough level.'
+  list:
+    format: '&a * {element}'
+    replaces:
+      none: 'None'
+      more: '&8 Others...'
   items:
     equip: '276 : nome>&aEquipment : desc>&7Engage in stronger combat using\n&7items from our shop.\n\n&fCurrently purchased:\n{purchased}\n\n&e➜ Click to see!'
     skill: '384 : nome>&aSkills : desc>&7Click to buy or equip a skill.\n\n&fCurrently selected:\n{selected}\n\n&e➜ Click to see!'
