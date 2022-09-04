@@ -1,11 +1,12 @@
 menu:
   title: 'Shop - Items'
-  bought: '&cYou have already purchased this equipment.'
-  purchase: '&aYou purchased the &f''{item}''&aequipment.'
+  messages:
+    bought: '&cYou have already purchased this equipment.'
+    purchase: '&aYou purchased the &f''{item}'' &aequipment.'
 
 items:
   replaces:
-    selected: '&6is already equipped.'
+    selected: '&6Is already equipped.'
     buy: '&e➜ Click to buy.'
     insufficient-coins: '&c➜ You don''t have enough coins.'
     cost: '&fCost: &6{price} coins.\n'
