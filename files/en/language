@@ -12,28 +12,29 @@ options:
     kills: 10
 
 chat:
- delay: '&cAguarde mais {time} para falar novamente.'
- color:
-  default: '&7'
-  custom: '&f'
- format: '&7[&a{khpit_level}&7] &8❙ {khcore_prefixed}{color}: {message}'
+  delay: '&cAguarde mais {time} para falar novamente.'
+  color:
+    default: '&7'
+    custom: '&f'
+  format: '&7[&a{khpit_level}&7] &8❙ {khcore_prefixed}{color}: {message}'
 
 lobby:
- broadcast: '{khcore_prefixed} &6entrou no lobby!'
- tab:
-  enabled: true
-  header: '\n&a&lREDE KS\n    &fjogar.kskripts.tk\n '
-  footer: ' \n&bForúm: &fkskripts.tk/forum\n&b               Discord: &fkskripts.tk/discord               \n'
+  broadcast: '{khcore_prefixed} &6entrou no lobby!'
+  tab:
+    enabled: true
+    header: '\n&a&lREDE KS\n    &fjogar.kskripts.tk\n '
+    footer: ' \n&bForúm: &fkskripts.tk/forum\n&b               Discord: &fkskripts.tk/discord               \n'
 
 ingame:
- broadcast:
-  suicide: '{name} &emorreu sozinho.'
-  killed: '{name} &efoi abatido(a) por {killer}&e.'
- messages:
-  level_up: '&aSeu nível foi upado para o &2{level}'
-  delay: '&cAguarde mais {time} para usar isto novamente.'
-  bow:
-   hit: '{name} &aestá com &c{hp}❤ &ade HP'
+  broadcast:
+    suicide: '{name} &edied alone.'
+    killed: '{name} &ewas shot down by {killer}&e.'
+  messages:
+    combat_zone: '&aYou have entered the combat zone.'
+    level_up: '&aCongratulations, your level has been upgraded to level &2{level}&a.'
+    delay: '&cAguarde mais {time} para usar isto novamente.'
+    bow:
+      hit: '{name} &ahas &c{hp}❤ &ade HP'
 
 scoreboard:
   status:
