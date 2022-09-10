@@ -27,21 +27,33 @@ skills:
 
   golden_head:
     name: 'Golden Head'
-    price: 3000
+    price: 500
     icon: 'HEAD:3 : 1 : dono>StackedGold : nome>&6{name} : desc>&7When you kill a player you will\n&7receive a golden head that will\n&7give you effects when you eat it.\n\n&8 ❙ You will receive effects of a\n&8 ❙ golden apple and speed I for\n&8 ❙ 10 seconds.\n\n{state}'
   fishing_rod:
     name: 'Fishing Rod'
-    price: 3500
+    price: 1000
     icon: 'FISHING_ROD : 1 : nome>&6{name} : desc>&7Born with a fishing rod that will\n&7help you combo your enemies\n&7easier.\n\n{state}'
   lava_bucket:
     name: 'Lava Bucket'
-    price: 3000
+    price: 1000
     icon: 'LAVA_BUCKET : 1 : nome>&6{name} : desc>&7Born with a bucket of lava\n&7and set your enemies on fire.\n\n{state}'
   endless_quiver:
     name: 'Endless Quiver'
-    price: 4000
+    price: 2000
     icon: 'BOW : 1 : nome>&6{name} : desc>&7When hitting an enemy with a\n&7bow, you will receive two extra\n&7arrows.\n\n{state}'
   fortifier:
     name: 'Fortifier'
     price: 5000
     icon: '145 : 1 : nome>&6{name} : desc>&7When taking damage with this\n&7skill activated, the damage\n&7taken will be reduced by 10%.\n\n{state}'
+  safety-first:
+    name: 'Safety First'
+    price: 3000
+    icon: 'IRON_HELMET : 1 : nome>&6{name} : desc>&7Spawn with a helmet.\n\n{state}'
+  vampire:
+    name: 'Vampire'
+    price: 4000
+    icon: '376 : 1 : nome>&6{name} : desc>&7Don''t earn golden apples. Earn\n&7&c0.5❤&7 on melee hit. Earn &c1.5❤&7 on a\n&7fully charged arrow hit. Earn\n&cRegeneration II&7 (5s) on kill.\n\n{state}'
+  gladiator:
+    name: 'Gladiator'
+    price: 4000
+    icon: 'BONE : 1 : nome>&6{name} : desc>&7Receive &9-3%&7 damage per nearby\n&7player. 12 blocks range. Minimum 3\n&7max 10 players.\n\n{state}'
