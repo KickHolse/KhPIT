@@ -6,13 +6,12 @@ options:
   items:
     come_back: 'ROSE_RED : nome>&cCome back'
   coins:
-    kills: 50
-    death: 25
-  xp:
     kills: 10
+  xp:
+    kills: 5
 
 chat:
-  delay: '&cAguarde mais {time} para falar novamente.'
+  delay: '&cWait another {time} seconds to speak again.'
   color:
     default: '&7'
     custom: '&f'
@@ -34,7 +33,7 @@ ingame:
     level_up: '&aCongratulations, your level has been upgraded to level &2{level}&a.'
     delay: '&cAguarde mais {time} para usar isto novamente.'
     bow:
-      hit: '{name} &ahas &c{hp}❤ &ade HP'
+      hit: '{name} &ahas &c{hp}❤ &aof HP'
 
 scoreboard:
   status:
