@@ -1,24 +1,18 @@
 # KhPIT informations
-● This is a The Pit skript.
+- Server version: 1.8x
+- Depend: LeafSk, SkQuery, Skellett and Skript<br>
+###### For any other pieces of information, don't hesitate to contact me via Discord!
+<hr>
 
-## Informations
-Easy to configure
-
-⦁ Server version: 1.8x<br>
-⦁ Depend: LeafSk, SkQuery, Skellett and Skript<br>
-For any other pieces of information, don't hesitate to contact me via Discord!
-
-## Main skript features
-The skript has fully configurable languages
-
-⦁ Implemented functions:
+**Main skript features:**
+- The skript has fully configurable languages
 - Custom join message
 - Scoreboard
 - Chat format
 - Player tag (In-game & Tab)
 
-⦁ Gameplay features:
-- Perks (Golden heads, Fishing rod, Lava bucket, Strength-chaining, Endless quiver, Mineman, Safety first, Trickle-down, Lucky diamond, Spammer, Bounty hunter, Streaker, Gladiator, Vampire)
+**Gameplay features:**
+- Perks (Golden heads, Fishing rod, Lava bucket, Endless quiver, Safety first, Gladiator, Vampire, Fortifier)
 - Bounty (When players reach a number of kills, they are bountied *gold reward*)
 - Gold (Minigame's currency, editable per player)
 - Armor kit (Death players drop iron parts *drops by chance*, receive iron parts upon respawning *drops by chance*)
