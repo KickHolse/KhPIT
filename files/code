@@ -1,0 +1,698 @@
+# ─────────────────────────────────────────────────── #
+#                    ██ ▄█▀  ██████                   #
+#                    ██▄█▒ ▒██    ▒                   #
+#                   ▓███▄░ ░ ▓██▄                     #
+#                   ▓██ █▄   ▒   ██▒                  #
+#                   ▒██▒ █▄▒██████▒▒                  #
+#                   ▒ ▒▒ ▓▒▒ ▒▓▒ ▒ ░                  #
+#                   ░ ░▒ ▒░░ ░▒  ░ ░                  #
+#                   ░ ░░ ░ ░  ░  ░                    #
+#                   ░  ░         ░                    #
+# ─────────────────────────────────────────────────── #
+options:
+# KhPIT | crafted by Kick Holse
+  version: 1.0
+# ─────────────────────────────────────────────────── #
+# imports
+import:
+  org.bukkit.event.player.PlayerInteractEvent
+
+# ─────────────────────────────────────────────────── #
+# general
+chat:
+  {pit.status::%player%} is "lobbyg" or "ingame":
+    player does not have permission "khpit.chat.delay" or "khpit.*":
+      set {_wait} to difference between {chat_delay::%player%} and now
+      {_wait} is less than 3 seconds:
+        set {_x} to khcore_delayReplace("%difference between 3 seconds and {_wait}%")
+        send replacer "{time}" with {_x} in yaml value "chat.delay" from "ks.pit.language" to player
+        cancel event
+      else:
+        set {chat_delay::%player%} to now
+    set {_format} to khcore_text(player, yaml value "chat.format" from "ks.pit.language")
+    player has permission "khpit.chat.color" or "khpit.*":
+      set {_color} to yaml value "chat.color.custom" from "ks.pit.language"
+      replace "{message}" with colored message in {_format}
+    else:
+      set {_color} to yaml value "chat.color.default" from "ks.pit.language"
+      replace "{message}" with message in {_format}
+    replace all "{color}" in {_format} with colored {_color}
+    replace "{khpit_level}" with "%{pit.stats::%player%::level}%" in {_format}
+    set chat format to {_format}
+join:
+  pit_stats(player)
+  setup role to player and true
+  yaml value "options.bungeecord" from "ks.pit.language" is true:
+    set join message to ""
+    pit_score(player, true)
+    loop all players:
+      {pit.status::%player%} is "lobbyg" or "ingame":
+        pit_score(loop-player)
+    pit_hub(player)
+  else:
+    delete {pit.status::%player%}
+quit:
+  set quit message to ""
+  loop all players:
+    {pit.status::%player%} is "lobbyg" or "ingame":
+      pit_score(loop-player)
+
+drop:
+  {pit.status::%player%} is "lobbyg" or "ingame":
+    mgStats(player, "preferencies.build", "get", "", "") is "false"
+    cancel event
+pickup:
+  {pit.status::%player%} is "lobbyg" or "ingame":
+    mgStats(player, "preferencies.build", "get", "", "") is "false"
+    cancel event
+break:
+  {pit.status::%player%} is "lobbyg" or "ingame":
+    mgStats(player, "preferencies.build", "get", "", "") is "false"
+    cancel event
+place:
+  {pit.status::%player%} is "lobbyg":
+    mgStats(player, "preferencies.build", "get", "", "") is "false"
+    cancel event
+  else:
+    event-block is lava:
+      loop all blocks in radius 1.5 of event-block:
+        loop-block is water
+        cancel event
+        stop
+      add location of event-block to {pit.clear::*}
+      wait 2 seconds
+      set event-block to air
+      remove location of event-block from {pit.clear::*}
+    event-block is obsidian:
+      add location of event-block to {pit.clear::*}
+      wait 60 seconds
+      set event-block to air
+      remove location of event-block from {pit.clear::*}
+block flow:
+  event-block is lava:
+    cancel event
+
+projectile hit:
+  delete projectile
+hunger meter change:
+  cancel event
+hunger bar change:
+  cancel event
+weather change:
+  cancel event
+at 11:01:
+  set time to 10:00
+xp spawn:
+  cancel event
+click:
+  loop yaml nodes with keys "spawn" from "ks.pit.hotbar":
+    event-item is deserializeItem(yaml value "spawn.%loop-value%.icon" from "ks.pit.hotbar", player):
+      cancel event
+      pit_menu(player, yaml value "spawn.%loop-value%.execute" from "ks.pit.hotbar")
+pressure plate:
+  {pit.status::%player%} is "lobbyg"
+  cancel event  
+  push the player upwards at speed 0.4
+  push the player forwards at speed 0.8
+inventory click:
+  {pit.status::%player%} is "lobbyg" or "ingame":
+    clicked slot is 36 or 37 or 38 or 39:
+      cancel event
+  {pit.status::%player%} is "lobbyg":
+    mgStats(player, "preferencies.build", "get", "", "") is "false"
+    cancel event
+rightclick with a sword:
+  set {sf::%player%} to true
+
+damage of player:
+  {pit.status::%victim%} is "lobbyg":
+    damage cause is fall:
+      y-position of victim is y-position of deserializeLoca(yaml value "locations.fall" from "ks.pit.locations"):
+        set {pit.status::%victim%} to "ingame"
+        pit_game(victim)
+        send yaml value "ingame.messages.combat_zone" from "ks.pit.language" to victim
+      else:
+        damage >= health of victim:
+          pit_hub(victim)
+    cancel event
+  else:
+    attacker is a player:
+      {lasthit.%victim%} is not set:
+        set {lasthit.%victim%} to "%attacker%" parsed as player
+      {lasthit.%victim%} != attacker:
+        set {lasthit.%victim%} to "%attacker%" parsed as player
+    {sf::%victim%} is true:
+      delete {sf::%victim%}
+      set {_old} to damage
+      increase damage by -100%
+      set {_aw} to {_old} - damage
+      send "&c%{_old}%&7/&a%damage%" to victim
+    damage cause is fall:
+      {lasthit.%victim%} is not set
+      cancel event
+      stop
+    attacker != victim:
+      pit_score(victim)
+      pit_score({lasthit.%victim%})
+      loop 5 times:
+        {pit.skills-%loop-value%::%{lasthit.%victim%}%} is set:
+          set {_k%{pit.skills-%loop-value%::%{lasthit.%victim%}%}%} to true
+        {pit.skills-%loop-value%::%victim%} is set:
+          set {_v%{pit.skills-%loop-value%::%victim%}%} to true
+      {_vgladiator} is true:
+        set {_players} to number of all players in radius 12 of victim
+        remove 1 from {_players}
+        {_players} >= 3:
+          {_players} <= 10:
+            set {_percent} to {_players}*3
+            set {_x} to {_percent}*damage/100
+            #broadcast "&c%damage%&f p: %{_percent}% = %{_x}% &a%damage-{_x}%"
+            set damage to damage-{_x}
+      {_kvampire} is true:
+        set {lasthit.%victim%}'s health to {lasthit.%victim%}'s health + 0.5
+      {_vfortifier} is true:
+        set {_old} to damage
+        increase damage by -50%
+        set {_aw} to {_old} - damage
+        #send "&9%{_old}%&7/&b%damage%" to victim
+      "%damage cause%" is "projectile"
+      projectile is arrow
+      victim is not dead
+      send action bar replacer "{name}" and "{hp}" with khcore_roles(victim, "get", "colored") and "%victim's health - damage%" in yaml value "ingame.messages.bow.hit" from "ks.pit.language" to attacker
+      damage >= 4:
+        {_kvampire} is true
+        set {lasthit.%victim%}'s health to {lasthit.%victim%}'s health + 1.5
+      {_kendless_quiver} is true:
+        set {_x} to deserializeItem("ARROW : 2 : nome>&aArrows", {lasthit.%victim%})
+        give {lasthit.%victim%} unbreakable {_x}
+    damage >= health of victim:
+      cancel event
+      add 1 to {pit.stats::%victim%::deaths}
+      delete {pit.items::%victim%::*}
+      loop all players:
+        {pit.status::%loop-player%} is "ingame":
+          add loop-player to {_players::*}
+      {lasthit.%victim%} is a player:
+        pit_coinManager({lasthit.%victim%}, "add", 50)
+        add 10 to {pit.stats::%{lasthit.%victim%}%::xp}
+        add 1 to {pit.stats::%{lasthit.%victim%}%::kills}
+
+        {pit.stats::%{lasthit.%victim%}%::xp} >= {pit.stats::%{lasthit.%victim%}%::xpnextlevel}:
+          add 1 to {pit.stats::%{lasthit.%victim%}%::level}
+          add {pit.stats::%{lasthit.%victim%}%::xpnextlevel} to {pit.stats::%{lasthit.%victim%}%::xpnextlevel}
+          send replacer "{level}" with "%{pit.stats::%{lasthit.%victim%}%::level}%" in yaml value "ingame.messages.level_up" from "ks.pit.language" to {lasthit.%victim%}
+          pit_coinManager({lasthit.%victim%}, "add", {pit.stats::%{lasthit.%victim%}%::reward})
+          add 100 to {pit.stats::%{lasthit.%victim%}%::reward}
+
+        {pit.status::%{lasthit.%victim%}%} is "ingame":
+          loop 5 times:
+            {pit.skills-%loop-value%::%{lasthit.%victim%}%} is "golden_head":
+              set {_golden} to true
+            {pit.skills-%loop-value%::%{lasthit.%victim%}%} is "vampire":
+              delete {_golden}
+              set {_vampire} to true
+
+          loop 36 times:
+            set {_time} to slot loop-value of {lasthit.%victim%}'s inventory
+            {_time} is a empty_bucket:
+              set slot loop-value of {lasthit.%victim%} to deserializeItem("LAVA_BUCKET : 1 : nome>&6Lava Bucket", {lasthit.%victim%})
+              exit loop
+          {_golden} is true:
+            set {_head} to "StackedGold" parsed as offlineplayer
+            give {lasthit.%victim%} {_head}'s skull named "&6Golden Head"
+            #give {lasthit.%victim%} deserializeItem("HEAD:3 : 1 : dono>StackedGold : nome>&6Golden Head", {lasthit.%victim%})
+          else:
+            {_vampire} is true:
+              apply regeneration 2 to {lasthit.%victim%} for 5 seconds
+            else:
+              give {lasthit.%victim%} golden apple named "&bGolden Apple"
+        send replacer "{name}" and "{killer}" with khcore_roles(victim, "get", "colored") and khcore_roles({lasthit.%victim%}, "get", "colored") in yaml value "ingame.broadcast.killed" from "ks.pit.language" to {_players::*}
+        pit_score({lasthit.%victim%})
+      else:
+        send replacer "{name}" with khcore_roles(victim, "get", "colored") in yaml value "ingame.broadcast.suicide" from "ks.pit.language" to {_players::*}
+      pit_hub(victim)
+      pit_score(victim)
+      delete {lasthit.%{lasthit.%victim%}%}
+      delete {lasthit.%victim%}
+
+# ─────────────────────────────────────────────────── #
+# cmds
+command pit [<text=help>] [<text>] [<text>] [<text>]:
+  trigger:
+    arg 1 != "setspawn" or "build" or "setfall" or "coins" or "setleft":
+      arg 1 is "help":
+        send "%nl% &eHelp - 1/1 %nl% "
+        send "&a/spawn &f- &7Go to spawn"
+        send "&a/pit join &f- &7Enter the minigame"
+        send "&a/pit quit &f- &7Exit minigame"
+        player has permission "khpit.cmd.*" or "khpit.*":
+          send "&a/pit setspawn &f- &7Set the spawn"
+          send "&a/pit setleft &f- &7Set output"
+          send "&a/pit setfall &f- &7Set battle location"
+          send "&a/pit coins &f- &7Manage a player's coins"
+          send "&a/pit build &f- &7Enables/disables builder mode"
+        send ""
+      arg 1 is "join":
+        yaml value "options.bungeecord" from "ks.pit.language" is false
+        {pit.status::%player%} is set:
+          send "&cYou are already in The PIT."
+        else:
+          send "&aYou have entered The PIT."
+          pit_score(player, true)
+          loop all players:
+            {pit.status::%player%} is "lobbyg" or "ingame":
+              pit_score(loop-player)
+          pit_hub(player)
+      arg 1 is "sair":
+        yaml value "options.bungeecord" from "ks.pit.language" is false
+        {pit.status::%player%} is set:
+          send "&cYou left The PIT."
+          delete {pit.status::%player%}
+          loop all players:
+            {pit.status::%player%} is "lobbyg" or "ingame":
+              pit_score(loop-player)
+          delete stylish scoreboard "KHPIT-%player%"
+          teleport player to deserializeLoca(yaml value "locations.left" from "ks.pit.locations")
+        else:
+          send "&cYou are not in The PIT."
+    player has permission "khpit.cmd.*" or "khpit.*":
+      arg 1 is "setspawn":
+        set yaml value "locations.spawn" from file "plugins/KhPIT/locations.yml" to serializeLocati(player's location)
+        send "&aSpawn set successfully."
+      arg 1 is "setleft":
+        set yaml value "locations.left" from file "plugins/KhPIT/locations.yml" to serializeLocati(player's location)
+        send "&aOutput set successfully."
+      arg 1 is "setfall":
+        set yaml value "locations.fall" from file "plugins/KhPIT/locations.yml" to serializeLocati(player's location)
+        send "&aBattle location set successfully."
+      arg 1 is "coins":
+        arg 2 != "add" or "remove" or "set":
+          send "%nl% &eHelp - Coins 1/1%nl% "
+          send "&a/pit coins add&f - &7Add coins to a player"
+          send "&a/pit coins remove&f - &7Remove coins from a player"
+          send "&a/pit coins set &f- &7Set player coins%nl% "
+        arg 2 is "add":
+          arg 4 is set:
+            "%arg 4 parsed as int%" contains "none" or "-":
+              send "&cUse only positive numbers for this."
+            else:
+              arg 3 parsed as offlineplayer is online:
+                pit_coinManager(arg 3 parsed as player, "add", arg 4 parsed as int)
+                send "&aYou have added &6%arg 4% coins&a to %arg 3%&a."
+              else:
+                send "&cThis player is not currently online."
+          else:
+            send "&cUse /pit coins add [player] [amount]"
+        arg 2 is "remove":
+          arg 4 is set:
+            "%arg 4 parsed as int%" contains "none" or "-":
+              send "&cUse only positive numbers for this."
+            else:
+              arg 3 parsed as offlineplayer is online:
+                pit_coinManager(arg 3 parsed as player, "remove", arg 4 parsed as int)
+                send "&cYou removed &6%arg 4% coins&c from %arg 3%&c."
+              else:
+                send "&cThis player is not currently online."
+          else:
+            send "&cUse /pit coins remove [player] [amount]"
+        arg 2 is "set":
+          arg 4 is set:
+            "%arg 4 parsed as int%" contains "none" or "-":
+              send "&cUse only positive numbers for this."
+            else:
+              arg 3 parsed as offlineplayer is online:
+                pit_coinManager(arg 3 parsed as player, "set", arg 4 parsed as int)
+                send "&aYou set the coins of %arg 3%&a to &6%arg 4%&a."
+              else:
+                send "&cThis player is not currently online."
+          else:
+            send "&cUse /pit coins set [player] [amount]"
+      arg 1 is "build":
+        mgStats(player, "preferencies.build", "get", "", "") is "false":
+          mgStats(player, "preferencies.build", "set", "boolean", "true")
+          set player's gamemode to creative
+          send "&aBuilder mode enabled."
+        else:
+          mgStats(player, "preferencies.build", "set", "boolean", "false")
+          set player's gamemode to adventure
+          send "&cBuilder mode off."
+    else:
+      arg 1 != "help"
+      make player execute command "pit"
+command:
+  command is "spawn":
+    yaml value "options.bungeecord" from "ks.pit.language" is true:
+      {lasthit.%player%} is not set:
+        cancel event
+        pit_hub(player)
+      {lasthit.%player%} is "%player%":
+        cancel event
+        pit_hub(player)
+
+# ─────────────────────────────────────────────────── #
+# skills
+rightclick with head:
+  {pit.status::%player%} is "ingame":
+    name of event-item is "&6Golden Head"
+    cancel event
+    remove regeneration and absorption and speed from player
+    apply regeneration 2 to the player for 5 seconds
+    apply absorption 1 to the player for 120 seconds
+    apply speed 1 to the player for 8 seconds
+    remove event-item from player
+
+# ─────────────────────────────────────────────────── #
+# menus
+command setlevel [<integer=0>]:
+  trigger:
+    set {pit.stats::%player%::level} to arg 1
+
+function pit_menu(p: Player, menu: text, s: integer=1):
+  {_menu} is "shop":
+    open chest inventory with 3 rows named "Shop" to {_p}
+    wait a tick
+    loop 5 times:
+      {pit.skills-%loop-value-1%::%{_p}%} is set:
+        set {_x} to yaml value "menu.list.format" from "ks.pit.cosmetics/shop"
+        {pit.skills-%loop-value-1%::%{_p}%} != "none":
+          set {_name%loop-value%} to yaml value "skills.%{pit.skills-%loop-value-1%::%{_p}%}%.name" from "ks.pit.cosmetics/perks"
+          add replacer "{element}" with "%{_name%loop-value%}%" in {_x} to {_skills::*}
+        else:
+          add replacer "{element}" with yaml value "menu.list.replaces.none" from "ks.pit.cosmetics/shop" in {_x} to {_skills::*}
+    loop {pit.items::%{_p}%::*}:
+      (loop-index parsed as integer) <= 5:
+        loop-value != "none":
+          set {_x} to yaml value "menu.list.format" from "ks.pit.cosmetics/shop"
+          set {_name%loop-value%} to yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items"
+          add replacer "{element}" with "%{_name%loop-value%}%" in {_x} to {_items::*}
+      else:
+        add yaml value "menu.list.replaces.more" from "ks.pit.cosmetics/shop" to {_items::*}
+        exit loop
+    set {_buyned} to replacer "<none>" with replacer "{element}" with yaml value "menu.list.replaces.none" from "ks.pit.cosmetics/shop" in {_x} in "%{_items::*}%"
+    set {_list} to "%{_skills::*}%"
+    replace all ", " and "and " with "||" in {_list} and {_buyned}
+    make a gui slot 12 of {_p} with deserializeItem(replacer "{purchased}" with "%{_buyned}%" in yaml value "menu.items.equip" from "ks.pit.cosmetics/shop", {_p}) without nbt to run:
+      pit_menu({_p}, "shop_items")
+    make a gui slot 14 of {_p} with deserializeItem(replacer "{selected}" with "%{_list}%" in yaml value "menu.items.skill" from "ks.pit.cosmetics/shop", {_p})  to run:
+      pit_menu({_p}, "shop_skills")
+  {_menu} is "equip_skill":
+    set {_t} to yaml value "menu.title" from "ks.pit.cosmetics/perks"
+    set {_list::*} to yaml nodes with keys "skills" from "ks.pit.cosmetics/perks"
+    set {_rows} to 4
+    size of {_list::*} is between 8 and 14:
+      set {_rows} to 5
+    size of {_list::*} > 14:
+      set {_rows} to 6
+    open chest inventory with {_rows} rows named "%{_t}% ##%{_s}%" to {_p}
+    wait a tick
+
+    make a gui slot 9*{_rows}-5 of {_p} with deserializeItem(yaml value "options.items.come_back" from "ks.pit.language", {_p}) to run:
+      pit_menu({_p}, "shop_skills")
+    set {_slot} to 10
+
+    loop {_list::*}:
+      loop-value is not "replaces"
+      {pit.skills-%{_s}%::%{_p}%::unlockeds::*} contains loop-value:
+        {pit.skills-%{_s}%::%{_p}%} != loop-value:
+          set {_lore} to yaml value "skills.replaces.select" from "ks.pit.cosmetics/perks"
+        else:
+          set {_lore} to yaml value "skills.replaces.unselect" from "ks.pit.cosmetics/perks"
+      else:
+        set {_price} to yaml value "skills.replaces.cost" from "ks.pit.cosmetics/perks"
+        set {_cost} to yaml value "skills.%loop-value%.price" from "ks.pit.cosmetics/perks"
+        set {_buy} to yaml value "skills.replaces.insufficient-coins" from "ks.pit.cosmetics/perks"
+        pit_coinManager({_p}, "has", "%{_cost}%" parsed as integer) is true:
+          set {_buy} to yaml value "skills.replaces.buy" from "ks.pit.cosmetics/perks"
+        replace "{price}" with formatNumber("%{_cost}%" parsed as int) in {_price}
+        set {_lore} to "%{_price}%||%{_buy}%"
+      set {_name} to yaml value "skills.%loop-value%.name" from "ks.pit.cosmetics/perks"
+
+      set {_x} to replacer "{name}" with {_name} in yaml value "skills.%loop-value%.icon" from "ks.pit.cosmetics/perks"
+      replace "{state}" with {_lore} in {_x}
+
+      set {_sk} to loop-value
+
+      make a gui slot {_slot} of {_p} with deserializeItem({_x}, {_p}) to run:
+        {pit.status::%{_p}%} != "ingame"
+        {pit.skills-%{_s}%::%{_p}%::unlockeds::*} contains "%{_sk}%":
+          {pit.skills-%{_s}%::%{_p}%} != "%{_sk}%":
+            loop 5 times:
+              {pit.skills-%loop-value-2%::%{_p}%} is "%{_sk}%":
+                send yaml value "menu.messages.bought" from "ks.pit.cosmetics/perks"
+                stop
+            set {pit.skills-%{_s}%::%{_p}%} to "%{_sk}%"
+            send replacer "{skill}" and "{slot}" with "%{_name}%" and "%{_s}%" in yaml value "menu.messages.select" from "ks.pit.cosmetics/perks" to {_p}
+            pit_menu({_p}, "equip_skill", {_s})
+          else:
+            set {pit.skills-%{_s}%::%{_p}%} to "none"
+            pit_menu({_p}, "equip_skill", {_s})
+        else:
+          pit_coinManager({_p}, "has", "%{_cost}%" parsed as int):
+            pit_coinManager({_p}, "remove", "%{_cost}%" parsed as int)
+            add "%{_sk}%" to {pit.skills-%{_s}%::%{_p}%::unlockeds::*}
+            send replacer "{skill}" with "%{_name}%" in yaml value "menu.messages.purchase" from "ks.pit.cosmetics/perks" to {_p}
+            pit_menu({_p}, "equip_skill", {_s})
+
+      add 1 to {_slot}
+      {_slot} is 17 or 26:
+        add 2 to {_slot}
+  {_menu} is "shop_skills":
+    open chest inventory with 4 rows named yaml value "menu.title" from "ks.pit.cosmetics/perks" to {_p}
+    wait a tick
+    make a gui slot 31 of {_p} with deserializeItem(yaml value "options.items.come_back" from "ks.pit.language", {_p}) to run:
+      pit_menu({_p}, "shop")
+    set {_x} to yaml value "menu.informations" from "ks.pit.cosmetics/perks"
+    make a gui slot 32 of {_p} with deserializeItem(replacer "{level}" and "{xp}" and "{need_xp}" with "%{pit.stats::%{_p}%::level}%" and "%{pit.stats::%{_p}%::xp}%" and "%{pit.stats::%{_p}%::xpnextlevel}%" in {_x}, {_p})
+
+    set {_slot} to 11
+    loop 5 times:
+      set {_sc} to loop-value
+
+      loop "locked" and "unlocked":
+        set {_%loop-value-2%} to yaml value "menu.%loop-value-2%_slot" from "ks.pit.cosmetics/perks"
+        set {_level} to yaml value "menu.required_level.slot_%loop-value-1%" from "ks.pit.cosmetics/perks"
+        {pit.stats::%{_p}%::level} >= {_level}:
+          {pit.skills-%loop-value-1%::%{_p}%} is not set:
+            set {pit.skills-%loop-value-1%::%{_p}%} to "none"
+          set {_state} to yaml value "menu.replaces.select" from "ks.pit.cosmetics/perks"
+        else:
+          delete {pit.skills-%loop-value-1%::%{_p}%}
+          set {_state} to yaml value "menu.replaces.locked" from "ks.pit.cosmetics/perks"
+        replace "{slot}" with "%loop-value-1%" in {_%loop-value-2%}
+        replace "{level}" with "%{_level}%" in {_%loop-value-2%}
+        replace "{state}" with "%{_state}%" in {_%loop-value-2%}
+
+      set {_item} to deserializeItem({_locked}, {_p})
+      {pit.skills-%loop-value%::%{_p}%} is set:
+        {pit.skills-%loop-value%::%{_p}%} is "none":
+          set {_item} to deserializeItem({_unlocked}, {_p})
+          set {_run} to "select"
+        else:
+          set {_icon} to replacer "{name}" with yaml value "skills.%{pit.skills-%loop-value%::%{_p}%}%.name" from "ks.pit.cosmetics/perks" in yaml value "skills.%{pit.skills-%loop-value%::%{_p}%}%.icon" from "ks.pit.cosmetics/perks"
+          replace "{state}" with yaml value "menu.replaces.select" from "ks.pit.cosmetics/perks" in {_icon}
+          set {_item} to deserializeItem({_icon}, {_p})
+          set {_run} to "select"
+      else:
+        set {_run} to "none"
+
+      make a gui slot {_slot} of {_p} with {_item} to run:
+        {_run} is "select":
+          pit_menu({_p}, "equip_skill", {_sc})
+
+      add 1 to {_slot}
+  {_menu} is "shop_items":
+    open chest inventory with 4 rows named yaml value "menu.title" from "ks.pit.cosmetics/items" to {_p}
+    wait a tick
+    make a gui slot 31 of {_p} with deserializeItem(yaml value "options.items.come_back" from "ks.pit.language", {_p}) to run:
+      pit_menu({_p}, "shop")
+    
+    set {_slot} to 10
+    loop yaml nodes with keys "items" from "ks.pit.cosmetics/items":
+      loop-value is not "replaces"
+
+      {pit.items::%{_p}%::*} contains loop-value:
+        set {_lore} to yaml value "items.replaces.selected" from "ks.pit.cosmetics/items"
+      else:
+        set {_run} to "buy"
+        set {_price} to yaml value "items.replaces.cost" from "ks.pit.cosmetics/items"
+        set {_cost} to yaml value "items.%loop-value%.price" from "ks.pit.cosmetics/items"
+        set {_buy} to yaml value "items.replaces.insufficient-coins" from "ks.pit.cosmetics/items"
+        pit_coinManager({_p}, "has", "%{_cost}%" parsed as int) is true:
+          set {_buy} to yaml value "items.replaces.buy" from "ks.pit.cosmetics/items"
+        replace "{price}" with formatNumber("%{_cost}%" parsed as int) in {_price}
+        set {_lore} to "%{_price}%||%{_buy}%"
+      set {_name} to yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items"
+
+      set {_x} to yaml value "items.%loop-value%.icon" from "ks.pit.cosmetics/items"
+      replace "{state}" with {_lore} in {_x}
+      replace "{name}" with {_name} in {_x}
+      set {_item} to deserializeItem({_x}, {_p})
+
+      set {_sk} to loop-value
+      {_item}.setAmount(1)
+      make a gui slot {_slot} of {_p} with {_item} without nbt to run:
+        {pit.status::%{_p}%} != "ingame":
+          {_run} is "buy":
+            {pit.items::%{_p}%::*} contains "%{_sk}%":
+              send yaml value "menu.messages.bought" from "ks.pit.cosmetics/items" to {_p}
+            else:
+              pit_coinManager({_p}, "has", "%{_cost}%" parsed as int):
+                pit_coinManager({_p}, "remove", "%{_cost}%" parsed as int)
+                add "%{_sk}%" to {pit.items::%{_p}%::*}
+                send replacer "{item}" with {_name} in yaml value "menu.messages.purchase" from "ks.pit.cosmetics/items" to {_p}
+                pit_menu({_p}, "shop_items")
+
+      add 1 to {_slot}
+
+function pit_hub(p: Player, clear: Boolean=false):
+  set {_p}'s max health to 10
+  extinguish {_p}
+  set {_p}'s food to 20
+  clear {_p}'s inventory
+  set {_p}'s gamemode to survival
+  mgStats({_p}, "preferencies.build", "set", "boolean", "false")
+  delete {sf::%{_p}%} and {combatl::%{_p}%}
+  heal {_p}
+  loop ...{_p}.getActivePotionEffects():
+    {_p}.removePotionEffect(loop-value.getType())
+  loop 5 times:
+    set {_level} to yaml value "menu.required_level.slot_%loop-value%" from "ks.pit.cosmetics/perks"
+    {pit.stats::%{_p}%::level} >= {_level}:
+      {pit.skills-%loop-value%::%{_p}%} is not set:
+        set {pit.skills-%loop-value%::%{_p}%} to "none"
+    else:
+      loop-value is not 1
+      delete {pit.skills-%loop-value%::%{_p}%}
+  {_clear} is false
+  set {pit.status::%{_p}%} to "lobbyg"
+  pit_score({_p})
+  teleport {_p} to deserializeLoca(yaml value "locations.spawn" from "ks.pit.locations")
+  loop yaml nodes with keys "spawn" from "ks.pit.hotbar":
+    set slot yaml value "spawn.%loop-value%.slot" from "ks.pit.hotbar" of {_p} to deserializeItem(yaml value "spawn.%loop-value%.icon" from "ks.pit.hotbar", {_p})
+function pit_game(p: Player):
+  pit_hub({_p}, true)
+  pit_score({_p}, true)
+  loop yaml nodes with keys "ingame" from "ks.pit.hotbar":
+    loop-value != "armor"
+    set slot yaml value "ingame.%loop-value%.slot" from "ks.pit.hotbar" of {_p} to unbreakable deserializeItem(yaml value "ingame.%loop-value%.icon" from "ks.pit.hotbar", {_p}) without nbt
+  loop yaml nodes with keys "ingame.armor" from "ks.pit.hotbar":
+    set {_armor} to deserializeItem(yaml value "ingame.armor.%loop-value%" from "ks.pit.hotbar", {_p})
+    equip {_p} with unbreakable {_armor} without nbt
+  loop 5 times:
+    loop "fishing_rod" and "lava_bucket" and "safety-first":
+      {pit.skills-%loop-value-1%::%{_p}%} is "%loop-value-2%":
+        set {_%loop-value-2%} to true
+  {_fishing_rod} is true:
+    set slot 2 of {_p} to unbreakable deserializeItem("FISHING_ROD : 1 : nome>&6Fishing Rod", {_p}) without nbt
+  {_safety-first} is true:
+    equip {_p} with unbreakable deserializeItem("CHAINMAIL_HELMET : 1", {_p}) without nbt
+  {_lava_bucket} is true:
+    set {_slot} to 3
+    {_fishing_rod} != true:
+      set {_slot} to 2
+    set slot {_slot} of {_p} to unbreakable deserializeItem("LAVA_BUCKET : 1 : nome>&6Lava Bucket", {_p}) without nbt
+  loop {pit.items::%{_p}%::*}:
+    set {_x} to yaml value "items.%loop-value%.icon" from "ks.pit.cosmetics/items"
+    set {_split::*} to {_x} split at " : "
+    replace " : %{_split::4}%" with "" in {_x}
+    loop-value is "obsidian" or "arrow" or "diamond_chestplate" or "diamond_boots" or "iron_leggings":
+      loop-value is "diamond_chestplate" or "diamond_boots" or "iron_leggings":
+        set {_armor} to deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p})
+        equip {_p} with unbreakable {_armor} without nbt
+      else:
+        give {_p} unbreakable deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p}) without nbt
+    else:
+      set slot yaml value "items.%loop-value%.slot" from "ks.pit.cosmetics/items" of {_p} to unbreakable deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p}) without nbt
+
+function pit_coinManager(p: player, type: text, coin: integer) :: boolean:
+  set {_userc} to {pit.stats::%{_p}%::coins}
+  {_type} is "add":
+    add {_gold} to {pit.%{_uuid}%.gold}
+    add {_coin} to {_userc}
+    {_userc} > 99999999999:
+      set {_userc} to 99999999999
+  {_type} is "remove":
+    remove {_coin} from {_userc}
+    {_userc} < 0:
+      set {_userc} to 0
+  {_type} is "set":
+    set {_userc} to {_coin}
+  set {pit.stats::%{_p}%::coins} to {_userc}
+  pit_score({_p})
+  {_type} is "has":   
+    {_userc} >= {_coin}:
+      return true
+    return false
+function pit_stats(p: Player):
+  loop "coins" and "kills" and "deaths" and "level" and "xp":
+    {pit.stats::%{_p}%::%loop-value%} is not set:
+      set {pit.stats::%{_p}%::%loop-value%} to 0
+      loop-value is "level":
+        set {pit.stats::%{_p}%::%loop-value%} to 1
+  {pit.skills-1::%{_p}%} is not set:
+    set {pit.skills-1::%{_p}%} to "none"
+  {pit.stats::%{_p}%::reward} is not set:
+    set {pit.stats::%{_p}%::reward} to 500
+  {pit.stats::%{_p}%::xpnextlevel} is not set:
+    set {pit.stats::%{_p}%::xpnextlevel} to 500
+function pit_score(p: Player, e: Boolean=false):
+  {_e} is true:
+    set {score.title} to yaml value "scoreboard.title" from "ks.pit.language"
+    set {_temp::*} to yaml list "scoreboard.lines" from "ks.pit.language"
+    set {scoreline} to 0
+    set {_empty} to 0
+    delete {score.line::*}
+    set {_line} to amount of {_temp::*}
+    loop {_temp::*}:
+      add 1 to {scoreline}
+      "%loop-value%" is "":
+        set {score.line::%{_line}%} to "§%{_empty}%"
+        {_empty} < 9:
+          add 1 to {_empty}
+      else:
+        set {score.line::%{_line}%} to colored loop-value
+      remove 1 from {_line}
+    delete stylish scoreboard "KHPIT-%{_p}%"
+    create new stylish scoreboard named "KHPIT-%{_p}%"
+    set {_line} to 1
+    loop {scoreline} times:
+      create a new id based score "KHPIT-%{_p}%Slot%{_line}%" with text "&%{_line}%" slot {_line} for stylish scoreboard "KHPIT-%{_p}%"
+      add 1 to {_line}
+    set title of stylish scoreboard "KHPIT-%{_p}%" to colored {score.title}
+  stylish scoreboard "KHPIT-%{_p}%" exists
+  set stylish scoreboard of {_p} to "KHPIT-%{_p}%"
+  set {_linee} to 1
+  loop {scoreline} times:
+    set {_x} to "%{score.line::%{_linee}%}%"
+    make console execute command "nte player %{_p}% suffix &7 [&a%{pit.stats::%{_p}%::level}%&7]"
+    replace "{online}" with "%number of all players%" in {_x}
+    replace "{kills}" with "%{pit.stats::%{_p}%::kills}%" in {_x}
+    replace "{deaths}" with "%{pit.stats::%{_p}%::deaths}%" in {_x}
+    replace "{coins}" with formatNumber({pit.stats::%{_p}%::coins}) in {_x}
+    replace "{level}" with "%{pit.stats::%{_p}%::level}%" in {_x}
+    replace "{need_level}" with "%{pit.stats::%{_p}%::xpnextlevel}-{pit.stats::%{_p}%::xp}%" in {_x}
+    {lasthit.%{_p}%} is set:
+      replace "{state}" with yaml value "scoreboard.status.fighting" from "ks.pit.language" in {_x}
+    replace "{state}" with yaml value "scoreboard.status.idling" from "ks.pit.language" in {_x}
+    #replace "{state}" with replacer "lobbyg" and "ingame" with yaml value "scoreboard.status.idling" from "ks.pit.language" and yaml value "scoreboard.status.fighting" from "ks.pit.language" in {pit.status::%{_p}%} in {_x}
+    set the text of id "KHPIT-%{_p}%Slot%{_linee}%" to khcore_text({_p}, {_x})
+    add 1 to {_linee}
+  wait 1 seconds
+
+
+# ─────────────────────────────────────────────────── #
+# load
+load:
+  loop "hotbar" and "language" and "locations" and "cosmetics/shop" and "cosmetics/perks" and "cosmetics/items":
+    fileExists("plugins/KhPIT/%loop-value%.yml") != true:
+      create file "plugins/KhPIT/%loop-value%.yml"
+      delete file "plugins/KhPIT/%loop-value%.yml"
+      download from "https://raw.githubusercontent.com/KickHolse/KhPIT/main/files/en/%loop-value%" to file "plugins/KhPIT/%loop-value%.yml"
+    yaml "ks.pit.%loop-value%" is loaded:
+      unload yaml "ks.pit.%loop-value%"
+    load yaml "plugins/KhPIT/%loop-value%.yml" as "ks.pit.%loop-value%"
+  text from "https://api.spigotmc.org/legacy/update.php?resource=105200" != "{@version}":
+    send "[KhPIT] &cYou are not using the latest version of skript." to console
+  loop {pit.clear::*}:
+    set block at loop-value to air
+    wait a tick
