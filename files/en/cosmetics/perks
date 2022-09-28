@@ -1,5 +1,5 @@
 menu:
-  title: 'Shop - Skills'
+  title: 'Shop - Perks'
   informations: 'PAPER : nome>&eInformations : desc>&fYour Level: &7{level}\n&fYour XP: &7{xp}/{need_xp}'
   locked_slot: '351:8 : 1 : nome>&cSlot #{slot} : desc>&7Use skills to help you in combat.\n\n&fRequired level: &6{level}\n\n{state}'
   unlocked_slot: '351:10 : 1 : nome>&aSlot #{slot} : desc>&7Select a skill to fill this slot.\n\n{state}'
@@ -19,10 +19,10 @@ menu:
 
 skills:
   replaces:
-    select: '&e➜ Click to select.'
-    unselect: '&e➜ Click to deselect.'
-    buy: '&e➜ Click to buy.'
-    insufficient-coins: '&c➜ You don''t have enough coins.'
+    select: '&e➟ Click to select.'
+    unselect: '&e➟ Click to deselect.'
+    buy: '&e➟ Click to buy.'
+    insufficient-coins: '&c➟ You don''t have enough coins.'
     cost: '&fCost: &6{price} coins.\n'
 
   golden_head:
