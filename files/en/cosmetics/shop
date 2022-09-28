@@ -6,5 +6,5 @@ menu:
       none: 'None'
       more: '&8 Others...'
   items:
-    equip: '276 : nome>&aEquipment : desc>&7Engage in stronger combat using\n&7items from our shop.\n\n&fCurrently purchased:\n{purchased}\n\n&e➜ Click to see!'
-    skill: '384 : nome>&aSkills : desc>&7Click to buy or equip a skill.\n\n&fCurrently selected:\n{selected}\n\n&e➜ Click to see!'
+    equip: '276 : nome>&aEquipment : desc>&7Engage in stronger combat using\n&7items from our shop.\n\n&fCurrently purchased:\n{purchased}\n\n&e➟ Click to see!'
+    skill: '384 : nome>&aPerks : desc>&7Click to buy or equip a skill.\n\n&fCurrently selected:\n{selected}\n\n&e➟ Click to see!'
