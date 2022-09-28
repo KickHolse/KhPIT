@@ -16,7 +16,7 @@ ingame:
     icon: 'BOW'
   arrow:
     slot: 8
-    icon: 'ARROW : 32 : nome>&aArrows'
+    icon: 'ARROW : 32'
   armor:
     boots: 'IRON_BOOTS'
     leggings: 'CHAINMAIL_LEGGINGS'
