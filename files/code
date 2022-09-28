@@ -11,7 +11,7 @@
 # ─────────────────────────────────────────────────── #
 options:
 # KhPIT | crafted by Kick Holse
-  version: 1.0
+  version: 1.1
 # ─────────────────────────────────────────────────── #
 # imports
 import:
@@ -263,7 +263,7 @@ command pit [<text=help>] [<text>] [<text>] [<text>]:
             {pit.status::%player%} is "lobbyg" or "ingame":
               pit_score(loop-player)
           pit_hub(player)
-      arg 1 is "sair":
+      arg 1 is "quit":
         yaml value "options.bungeecord" from "ks.pit.language" is false
         {pit.status::%player%} is set:
           send "&cYou left The PIT."
@@ -350,7 +350,7 @@ command:
         pit_hub(player)
 
 # ─────────────────────────────────────────────────── #
-# skills
+# perks
 rightclick with head:
   {pit.status::%player%} is "ingame":
     name of event-item is "&6Golden Head"
@@ -363,10 +363,6 @@ rightclick with head:
 
 # ─────────────────────────────────────────────────── #
 # menus
-command setlevel [<integer=0>]:
-  trigger:
-    set {pit.stats::%player%::level} to arg 1
-
 function pit_menu(p: Player, menu: text, s: integer=1):
   {_menu} is "shop":
     open chest inventory with 3 rows named "Shop" to {_p}
@@ -501,13 +497,19 @@ function pit_menu(p: Player, menu: text, s: integer=1):
 
       add 1 to {_slot}
   {_menu} is "shop_items":
-    open chest inventory with 4 rows named yaml value "menu.title" from "ks.pit.cosmetics/items" to {_p}
+    set {_list::*} to yaml nodes with keys "items" from "ks.pit.cosmetics/items"
+    set {_rows} to 4
+    size of {_list::*} is between 8 and 14:
+      set {_rows} to 5
+    size of {_list::*} > 14:
+      set {_rows} to 6
+    open chest inventory with {_rows} rows named yaml value "menu.title" from "ks.pit.cosmetics/items" to {_p}
     wait a tick
-    make a gui slot 31 of {_p} with deserializeItem(yaml value "options.items.come_back" from "ks.pit.language", {_p}) to run:
+    make a gui slot {_rows}*9-5 of {_p} with deserializeItem(yaml value "options.items.come_back" from "ks.pit.language", {_p}) to run:
       pit_menu({_p}, "shop")
     
     set {_slot} to 10
-    loop yaml nodes with keys "items" from "ks.pit.cosmetics/items":
+    loop {_list::*}:
       loop-value is not "replaces"
 
       {pit.items::%{_p}%::*} contains loop-value:
@@ -529,7 +531,6 @@ function pit_menu(p: Player, menu: text, s: integer=1):
       set {_item} to deserializeItem({_x}, {_p})
 
       set {_sk} to loop-value
-      {_item}.setAmount(1)
       make a gui slot {_slot} of {_p} with {_item} without nbt to run:
         {pit.status::%{_p}%} != "ingame":
           {_run} is "buy":
@@ -541,8 +542,9 @@ function pit_menu(p: Player, menu: text, s: integer=1):
                 add "%{_sk}%" to {pit.items::%{_p}%::*}
                 send replacer "{item}" with {_name} in yaml value "menu.messages.purchase" from "ks.pit.cosmetics/items" to {_p}
                 pit_menu({_p}, "shop_items")
-
       add 1 to {_slot}
+      {_slot} is 17 or 26:
+        add 2 to {_slot}
 
 function pit_hub(p: Player, clear: Boolean=false):
   set {_p}'s max health to 10
@@ -592,18 +594,16 @@ function pit_game(p: Player):
       set {_slot} to 2
     set slot {_slot} of {_p} to unbreakable deserializeItem("LAVA_BUCKET : 1 : nome>&6Lava Bucket", {_p}) without nbt
   loop {pit.items::%{_p}%::*}:
-    set {_x} to yaml value "items.%loop-value%.icon" from "ks.pit.cosmetics/items"
-    set {_split::*} to {_x} split at " : "
-    replace " : %{_split::4}%" with "" in {_x}
-    loop-value is "obsidian" or "arrow" or "diamond_chestplate" or "diamond_boots" or "iron_leggings":
-      loop-value is "diamond_chestplate" or "diamond_boots" or "iron_leggings":
-        set {_armor} to deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p})
-        equip {_p} with unbreakable {_armor} without nbt
+    loop yaml list "items.%loop-value%.items" from "ks.pit.cosmetics/items":
+      broadcast "%loop-value-2%"
+      loop-value-2 contains "SWORD":
+        set slot 0 of {_p} to unbreakable deserializeItem("%loop-value-2%", {_p}) without nbt
       else:
-        give {_p} unbreakable deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p}) without nbt
-    else:
-      set slot yaml value "items.%loop-value%.slot" from "ks.pit.cosmetics/items" of {_p} to unbreakable deserializeItem(replacer "{name}" with yaml value "items.%loop-value%.name" from "ks.pit.cosmetics/items" in {_x}, {_p}) without nbt
-
+        loop-value-2 contains "HELMET" or "CHESTPLATE" or "LEGGINGS" or "BOOTS":
+          equip {_p} with unbreakable deserializeItem("%loop-value-2%", {_p}) without nbt
+        else:
+          give {_p} unbreakable deserializeItem("%loop-value-2%", {_p}) without nbt
+      
 function pit_coinManager(p: player, type: text, coin: integer) :: boolean:
   set {_userc} to {pit.stats::%{_p}%::coins}
   {_type} is "add":
