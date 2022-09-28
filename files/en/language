@@ -1,5 +1,5 @@
 # crafted by kick#0808
-# www.kskripts.tk
+# www.khstore.tk
 
 options:
   bungeecord: true
@@ -48,4 +48,4 @@ scoreboard:
   - ' Status: &7{state}'
   - ' Coins: &6{coins}'
   - ''
-  - '&7www.kskripts.tk'
+  - '&7www.khstore.tk'
