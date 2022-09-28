@@ -7,32 +7,58 @@ menu:
 items:
   replaces:
     selected: '&6Is already equipped.'
-    buy: '&e➜ Click to buy.'
-    insufficient-coins: '&c➜ You don''t have enough coins.'
+    buy: '&e➟ Click to buy.'
+    insufficient-coins: '&c➟ You don''t have enough coins.'
     cost: '&fCost: &6{price} coins.\n'
 
   diamond_sword:
     name: 'Diamond Sword'
-    price: 500
-    slot: 0
-    icon: 'DIAMOND_SWORD : 1 : nome>&a{name} : desc>&7By purchasing this item, you will\n&7receive a diamond sword when\n&7you enter combat.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    price: 150
+    icon: 'DIAMOND_SWORD : nome>&a{name} : desc>&7By purchasing this item, you will\n&7receive a diamond sword when\n&7you enter combat.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'DIAMOND_SWORD : 1'
   obsidian:
-    name: 'Obsidian'
-    price: 350
-    icon: 'OBSIDIAN : 8 : nome>&a{name} : desc>&7&7With this kit you will receive eight\n&7obsidians that disappear after one\n&7minute of being placed.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    name: '8 Obsidian Blocks'
+    price: 50
+    icon: 'OBSIDIAN : nome>&a{name} : desc>&7With this kit you will receive eight\n&7obsidians that disappear after one\n&7minute of being placed.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'OBSIDIAN : 8'
+  obsidianstack:
+    name: 'Obsidian Stack (64)'
+    price: 280
+    icon: 'OBSIDIAN : nome>&a{name} : desc>&7With this kit you will receive 64\n&7obsidians that disappear after one\n&7minute of being placed.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'OBSIDIAN : 64'
   arrow:
     name: 'Arrows'
     price: 200
-    icon: 'ARROW : 18 : nome>&a{name} : desc>&7If you are a good archer this item will\n&7be perfect for you. He will give you\n&7more arrows for you to shoot at\n&7your enemies.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    icon: 'ARROW : nome>&a{name} : desc>&7If you are a good archer this item will\n&7be perfect for you. He will give you\n&7more arrows for you to shoot at\n&7your enemies.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'ARROW : 18'
+  ironpack:
+    name: 'Iron Pack'
+    price: 150
+    icon: 'IRON_LEGGINGS : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'IRON_HELMET'
+    - 'IRON_CHESTPLATE'
+    - 'IRON_LEGGINGS'
+    - 'IRON_BOOTS'
   diamond_chestplate:
     name: 'Diamond Chestplate'
-    price: 800
-    icon: 'DIAMOND_CHESTPLATE : 1 : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
-  iron_leggings:
-    name: 'Iron Leggings'
-    price: 400
-    icon: 'IRON_LEGGINGS : 1 : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    price: 500
+    icon: 'DIAMOND_CHESTPLATE : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'DIAMOND_CHESTPLATE'
+  diamond_leggings:
+    name: 'Diamond Leggings'
+    price: 1200
+    icon: 'DIAMOND_LEGGINGS : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'DIAMOND_LEGGINGS'
   diamond_boots:
     name: 'Diamond Boots'
-    price: 625
-    icon: 'DIAMOND_BOOTS : 1 : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    price: 300
+    icon: 'DIAMOND_BOOTS : nome>&a{name} : desc>&7Make your armor stronger by\n&7purchasing this item.\n\n&8 ❙ This item will disappear when\n&8 ❙ you die.\n\n{state}'
+    items:
+    - 'DIAMOND_BOOTS'
